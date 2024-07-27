@@ -7,6 +7,7 @@ pub mod axum;
 use std::{env, sync::OnceLock};
 
 use prost::Message;
+use request::CreateTokenRequest;
 pub use request::{LoginRequest, SignUpRequest, VerifyTokenRequest};
 pub use response::{LoginResponse, SignUpResponse, VerifyTokenResponse};
 pub use error::Error;
@@ -62,6 +63,25 @@ impl AuthClient {
         let response_bytes = response.bytes().await?;
 
         let response = LoginResponse::decode(response_bytes)?;
+
+        Ok(response)
+    }
+
+    pub async fn create_token(&self, request: CreateTokenRequest) -> Result<VerifyTokenResponse, Error> {
+        let response = self.http_client
+            .post(format!("{}/create_token", self.base_url))
+            .header(CONTENT_TYPE, "application/octet-stream")
+            .body(request.encode_to_vec())
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(Error::from(response.status()));
+        }
+
+        let response_bytes = response.bytes().await?;
+
+        let response = VerifyTokenResponse::decode(response_bytes)?;
 
         Ok(response)
     }

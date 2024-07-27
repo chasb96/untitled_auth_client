@@ -16,6 +16,11 @@ pub struct LoginRequest {
     pub password: String,
 }
 
+#[derive(Message)]
+pub struct CreateTokenRequest {
+    #[prost(string, tag = "1")]
+    pub user_id: String,
+}
 
 #[derive(Message)]
 pub struct VerifyTokenRequest {

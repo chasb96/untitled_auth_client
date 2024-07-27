@@ -13,6 +13,12 @@ pub struct LoginResponse {
 }
 
 #[derive(Message)]
+pub struct CreateTokenResponse {
+    #[prost(string, tag = "1")]
+    pub token: String,
+}
+
+#[derive(Message)]
 pub struct VerifyTokenResponse {
     #[prost(string, tag = "1")]
     pub user_id: String,
