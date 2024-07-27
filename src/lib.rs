@@ -66,7 +66,7 @@ impl AuthClient {
         Ok(response)
     }
 
-    pub async fn create_token(&self, request: CreateTokenRequest) -> Result<VerifyTokenResponse, Error> {
+    pub async fn create_token(&self, request: CreateTokenRequest) -> Result<CreateTokenResponse, Error> {
         let response = self.http_client
             .post(format!("{}/create_token", self.base_url))
             .header(CONTENT_TYPE, "application/octet-stream")
@@ -80,7 +80,7 @@ impl AuthClient {
 
         let response_bytes = response.bytes().await?;
 
-        let response = VerifyTokenResponse::decode(response_bytes)?;
+        let response = CreateTokenResponse::decode(response_bytes)?;
 
         Ok(response)
     }
