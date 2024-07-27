@@ -7,10 +7,8 @@ pub mod axum;
 use std::{env, sync::OnceLock};
 
 use prost::Message;
-use request::{LoginRequest, SignUpRequest};
-pub use request::VerifyTokenRequest;
-use response::{LoginResponse, SignUpResponse};
-pub use response::VerifyTokenResponse;
+pub use request::{LoginRequest, SignUpRequest, VerifyTokenRequest};
+pub use response::{LoginResponse, SignUpResponse, VerifyTokenResponse};
 pub use error::Error;
 
 use reqwest::{header::CONTENT_TYPE, Client};
