@@ -36,6 +36,10 @@ impl AuthClient {
             .send()
             .await?;
 
+        if !response.status().is_success() {
+            return Err(Error::from(response.status()));
+        }
+
         let response_bytes = response.bytes().await?;
 
         let response = SignUpResponse::decode(response_bytes)?;
@@ -51,6 +55,10 @@ impl AuthClient {
             .send()
             .await?;
 
+        if !response.status().is_success() {
+            return Err(Error::from(response.status()));
+        }
+
         let response_bytes = response.bytes().await?;
 
         let response = LoginResponse::decode(response_bytes)?;
@@ -65,6 +73,10 @@ impl AuthClient {
             .body(request.encode_to_vec())
             .send()
             .await?;
+
+        if !response.status().is_success() {
+            return Err(Error::from(response.status()));
+        }
 
         let response_bytes = response.bytes().await?;
 

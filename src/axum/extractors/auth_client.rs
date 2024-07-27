@@ -3,9 +3,9 @@ use axum::{async_trait, extract::FromRequestParts, http::{request::Parts, Status
 
 use crate::{AuthClient as ClientInner, AUTH_CLIENT};
 
-pub struct AuthClient(pub &'static ClientInner);
+pub struct AuthClientExtractor(pub &'static ClientInner);
 
-impl Deref for AuthClient {
+impl Deref for AuthClientExtractor {
     type Target = ClientInner;
 
     fn deref(&self) -> &Self::Target {
@@ -14,12 +14,12 @@ impl Deref for AuthClient {
 }
 
 #[async_trait]
-impl<T> FromRequestParts<T> for AuthClient {
+impl<T> FromRequestParts<T> for AuthClientExtractor {
     type Rejection = StatusCode;
 
     async fn from_request_parts<'a, 'b>(_: &'a mut Parts, _: &'b T) -> Result<Self, Self::Rejection> {
         let client = AUTH_CLIENT.get_or_init(ClientInner::default);
 
-        Ok(AuthClient(client))
+        Ok(AuthClientExtractor(client))
     }
 }
